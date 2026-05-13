@@ -1,0 +1,755 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto 0;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+header {
+    text-align: center;
+    padding: 30px 30px 20px;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 32px;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #718096;
+    font-size: 16px;
+}
+
+.controls {
+    padding: 0 30px 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.balance {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 30px 30px;
+}
+
+.balance-item {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.balance-item.total {
+    background: #4299e1;
+    color: white;
+}
+
+.balance-item span:first-child {
+    display: block;
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.table-container {
+    padding: 0 30px 30px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+    background: #edf2f7;
+}
+
+th, td {
+    padding: 16px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    font-weight: 500;
+    color: #4a5568;
+}
+
+tbody tr:hover {
+    background: #f7fafc;
+}
+
+.income {
+    color: #48bb78;
+}
+
+.expense {
+    color: #e53e3e;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.primary {
+    background: #4299e1;
+    color: white;
+}
+
+.secondary {
+    background: #ed8936;
+    color: white;
+}
+
+.tertiary {
+    background: transparent;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Модальное окно */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: #2d3748;
+    text-align: center;
+}
+
+#entryForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#entryForm input,
+#entryForm select,
+#entryForm textarea {
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+#entryForm input:focus,
+#entryForm select:focus,
+#entryForm textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+}
+
+textarea#entryDescription {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Стили для кнопок удаления */
+.delete-btn {
+    background: #fc8181;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: #f56565;
+}
+
+/* Градиентные полосы для визуализации */
+.income-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #48bb78, #68d391);
+    border-radius: 2px;
+}
+
+.expense-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #e53e3e, #fc8181);
+    border-radius: 2px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px auto 0;
+        border-radius: 16px;
+    }
+
+    header {
+        padding: 25px 20px 15px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .controls {
+        padding: 0 20px 20px;
+        flex-direction: column;
+    }
+
+    .balance {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 0 20px 25px;
+    }
+
+    .table-container {
+        padding: 0 20px 25px;
+    }
+
+    th, td {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    thead th {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        margin-top: 15px;
+        border-radius: 12px;
+    }
+
+    header {
+        padding: 20px 15px 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .balance-item {
+        padding: 15px 10px;
+    }
+
+    .balance-item span:first-child {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 10px 6px;
+        font-size: 12px;
+    }
+
+    #entryForm input,
+    #entryForm select,
+    #entryForm textarea {
+        padding: 10px 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Плавные переходы */
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Эффект нажатия */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Фокус для доступности */
+:focus-visible {
+    outline: 2px solid #4299e1;
+    outline-offset: 2px;
+}
+
+/* Отключение выделения текста на кнопках */
+button {
+    user-select: none;
+}
+
+/* Анимация появления записей */
+@keyframes fadeInRow {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+tbody tr {
+    animation: fadeInRow 0.4s ease forwards;
+}
+
+/* Стили для пустых состояний */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #718096;
+    font-style: italic;
+}
+
+/* Подсветка отрицательных балансов */
+#balance.negative {
+    color: #e53e3e;
+    font-weight: 600;
+}
+
+/* Индикаторы прогресса */
+.progress-container {
+    width: 100%;
+    background: #edf2f7;
+    border-radius: 8px;
+    height: 6px;
+    overflow: hidden;
+    margin: 8px 0 4px;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 8px;
+}
+
+/* Статистика по категориям */
+.category-stats {
+    padding: 0 30px 30px;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.category-name {
+    font-weight: 500;
+}
+
+.category-amount {
+    font-weight: 600;
+}
+
+/* Эффекты наведения для таблицы */
+tbody tr:hover td:first-child {
+    background: #4299e110;
+}
+
+/* Стили для уведомлений */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 22px;
+    background: #48bb78;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background: #e53e3e;
+}
+
+.notification.info {
+    background: #ed8936;
+}
+
+/* Графики и визуализация */
+.chart-container {
+    padding: 0 30px 30px;
+}
+
+.chart {
+    width: 100%;
+    height: 200px;
+    background: #f7fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 20px 10px;
+}
+
+.bar {
+    width: 25px;
+    background: linear-gradient(to top, #4299e1, #63b3ed);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s ease;
+}
+
+.expense-bar {
+    background: linear-gradient(to top, #e53e3e, #fc8181);
+}
+
+/* Фильтры и сортировка */
+.filters {
+    display: flex;
+    gap: 15px;
+    padding: 0 30px 20px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    color: #718096;
+    font-weight: 500;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Статистика по месяцам */
+.monthly-stats {
+    padding: 0 30px 30px;
+}
+
+.month-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.month-name {
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.month-balance {
+    font-weight: 600;
+}
+
+.month-positive {
+    color: #48bb78;
+}
+
+.month-negative {
+    color: #e53e3e;
+}
+
+/* Анимация для обновления баланса */
+@keyframes balancePulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+#balance.updated {
+    animation: balancePulse 0.3s ease;
+}
+
+/* Стили для экспорта данных */
+.export-controls {
+    padding: 0 30px 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+/* Подсказки */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Адаптивность для графиков */
+@media (max-width: 768px) {
+    .chart {
+        height: 150px;
+        padding: 15px 5px;
+    }
+
+    .bar {
+        width: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart {
+        height: 120px;
+        padding: 10px 3px;
+    }
+
+    .bar {
+        width: 12px;
+    }
+
+    .filters {
+        padding: 0 20px 15px;
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .export-controls {
+        padding: 0 20px 15px;
+        justify-content: center;
+    }
+}
+
+/* Тёмная тема (опционально) */
+body.dark-theme {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: #e2e8f0;
+}
+
+body.dark-theme .container {
+    background: #2d3748;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme header,
+body.dark-theme .balance,
+body.dark-theme .table-container,
+body.dark-theme .chart-container,
+body.dark-theme .category-stats,
+body.dark-theme .monthly-stats {
+    color: #e2e8f0;
+}
+
+body.dark-theme table {
+    background: #1a202c;
+}
+
+body.dark-theme th,
+body.dark-theme td {
+    border-bottom: 1px solid #4a5568;
+}
+
+body.dark-theme tbody tr:hover {
+    background: #4a5568;
+}
+
+body.dark-theme .modal-content {
+    background: #2d3748;
+}
+
+/* Плавные переходы для тёмной темы */
+body {
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Эффект загрузки */
+.loading::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid #4299e1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Общие стили для улучшения UX */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf2f7;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Панель пользователя */
+#userPanel {
+    padding: 15px 30px;
+    background: #edf2f7;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#currentUser {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.btn.small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Стили для форм авторизации */
+#loginForm, #registerForm {
+    gap: 12px;
+}
+
+#loginForm input, #registerForm input {
+    margin-bottom: 0;
+}
+
+.password-mismatch {
+    color: #e53e3e;
+    font-size: 12px;
+    margin-top: 5px;
+}

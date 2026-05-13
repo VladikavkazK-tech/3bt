@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бюджетный трекер</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+    <!-- Блок авторизации -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Вход в аккаунт</h3>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Имя пользователя" required>
+                <input type="password" id="loginPassword" placeholder="Пароль" required>
+                <div class="modal-actions">
+                    <button type="submit" class="btn primary">Войти</button>
+            <button type="button" id="toRegister" class="btn tertiary">Регистрация</button>
+        </div>
+    </form>
+</div>
+</div>
+
+<!-- Блок регистрации -->
+<div id="registerModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Регистрация аккаунта</h3>
+        <form id="registerForm">
+            <input type="text" id="registerUsername" placeholder="Имя пользователя" required>
+            <input type="password" id="registerPassword" placeholder="Пароль" required>
+            <input type="password" id="confirmPassword" placeholder="Подтвердите пароль" required>
+            <div class="modal-actions">
+                <button type="submit" class="btn primary">Зарегистрироваться</button>
+                <button type="button" id="toLogin" class="btn tertiary">Назад к входу</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Панель пользователя -->
+    <div id="userPanel" class="hidden">
+        <div class="user-info">
+            <span id="currentUser"></span>
+            <button id="logoutBtn" class="btn tertiary small">Выйти</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>💰 Бюджетный трекер</h1>
+        <p>Контролируйте свои доходы и расходы</p>
+    </header>
+
+    <div class="controls">
+        <button id="addIncomeBtn" class="btn primary">+ Доход</button>
+        <button id="addExpenseBtn" class="btn secondary">+ Расход</button>
+    </div>
+
+    <div class="balance">
+        <div class="balance-item">
+            <span>Доходы:</span>
+            <span id="totalIncome">0 ₽</span>
+        </div>
+        <div class="balance-item">
+            <span>Расходы:</span>
+            <span id="totalExpenses">0 ₽</span>
+        </div>
+        <div class="balance-item total">
+            <span>Баланс:</span>
+            <span id="balance">0 ₽</span>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="budgetTable">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+            <th>Тип</th>
+            <th>Категория</th>
+            <th>Сумма</th>
+            <th>Описание</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <!-- Записи будут добавляться через JS -->
+    </tbody>
+</table>
+</div>
+
+<!-- Модальное окно для добавления записи -->
+<div id="modal" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="modalTitle">Добавить доход</h3>
+        <form id="entryForm">
+            <input type="date" id="entryDate" required>
+            <select id="entryType" required>
+                <option value="income">Доход</option>
+                <option value="expense">Расход</option>
+            </select>
+            <select id="entryCategory" required>
+                <option value="">Выберите категорию</option>
+                <option value="Зарплата">Зарплата</option>
+                <option value="Бизнес">Бизнес</option>
+                <option value="Подарки">Подарки</option>
+                <option value="Продукты">Продукты</option>
+                <option value="Транспорт">Транспорт</option>
+                <option value="Развлечения">Развлечения</option>
+                <option value="Другое">Другое</option>
+            </select>
+            <input type="number" id="entryAmount" placeholder="Сумма" required>
+            <textarea id="entryDescription" placeholder="Описание (опционально)"></textarea>
+            <div class="modal-actions">
+                <button type="submit" class="btn primary">Добавить</button>
+                <button type="button" id="cancelBtn" class="btn tertiary">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
